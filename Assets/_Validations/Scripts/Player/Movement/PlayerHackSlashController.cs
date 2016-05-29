@@ -18,6 +18,7 @@ public class PlayerHackSlashController : MonoBehaviour
 
     //Inspector variables
     [SerializeField] private float movementSpeed;
+    [SerializeField] private float jumpForce;
 
     private void Awake()
     {
@@ -27,7 +28,14 @@ public class PlayerHackSlashController : MonoBehaviour
     private void Update()
     {
         CheckInputs();
-        MovimentPlayer();
+        
+    }
+
+    private void FixedUpdate()
+    {
+        MovementPlayer();
+        //CheckJump();
+       //CheckRun();
     }
     
     private void CheckInputs()
@@ -38,28 +46,39 @@ public class PlayerHackSlashController : MonoBehaviour
        playerInput = new Vector3(horizontalInput, 0, verticalInput);
     }
 
-    private void MovimentPlayer()
+    private void MovementPlayer()
     {
         rigidBody.velocity = playerInput * movementSpeed;
 
-        if (playerInput != Vector3.zero)
-            DispatchPlayerMovementEvent();      
+        //TODO = fix button transition dispatch stop event
+        if(Input.GetButtonDown("Horizontal") || Input.GetButtonDown("Vertical"))
+            DispatchPlayerMovementEvent();
+
+
+        if (Input.GetButtonUp("Horizontal") || Input.GetButtonUp("Vertical"))
+            DispatchPlayerStopEvent();
     }
 
+    //TODO = gravity fix, and infinity jump
     private void CheckJump()
     {
         if(Input.GetButtonDown("Jump"))
         {
+            rigidBody.AddForce(new Vector3(0, jumpForce, 0));
             DispatchPlayerJumpEvent();
         }
     }
 
+    //TODO = infinity run
     private void CheckRun()
     {
+        float bkpMovementSpeed = movementSpeed;
         if (Input.GetButtonDown("Run"))
         {
+            movementSpeed = 2 * movementSpeed;
             DispatchPlayerRunEvent();
         }
+
     }
 
     //Dispatchers
@@ -72,20 +91,20 @@ public class PlayerHackSlashController : MonoBehaviour
 
     private void DispatchPlayerStopEvent()
     {
-        if (OnPlayerMovementEvent != null)
-            OnPlayerMovementEvent();
+        if (OnPlayerStopEvent != null)
+            OnPlayerStopEvent();
     }
 
     private void DispatchPlayerJumpEvent()
     {
-        if (OnPlayerMovementEvent != null)
-            OnPlayerMovementEvent();
+        if (OnPlayerJumpEvent != null)
+            OnPlayerJumpEvent();
     }
 
     private void DispatchPlayerRunEvent()
     {
-        if (OnPlayerMovementEvent != null)
-            OnPlayerMovementEvent();
+        if (OnPlayerRunEvent != null)
+            OnPlayerRunEvent();
     }
 
 

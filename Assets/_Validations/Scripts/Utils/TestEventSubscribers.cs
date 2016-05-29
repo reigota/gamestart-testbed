@@ -1,25 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
+//TODO validate other events ( run and jump );
 public class TestEventSubscribers : MonoBehaviour 
 {
     [SerializeField]
     private PlayerHackSlashController playerController;
 
-    private void Awake()
-    {
-        playerController = GetComponent<PlayerHackSlashController>();
-    }
-
     private void OnEnable()
     {
-        Debug.Log("Subsc");
         playerController.OnPlayerMovementEvent += OnPlayerMovement;
+        playerController.OnPlayerStopEvent += OnPlayerStop;
     }
-    private void OnDisable()
+
+    private void OnDislabe()
     {
-        Debug.Log("Unsubs");
         playerController.OnPlayerMovementEvent -= OnPlayerMovement;
+        playerController.OnPlayerStopEvent -= OnPlayerStop;
     }
 
     private void OnPlayerMovement()
@@ -29,7 +27,7 @@ public class TestEventSubscribers : MonoBehaviour
 
     private void OnPlayerStop()
     {
-        Debug.Log("Player idle");
+        Debug.Log("Player stop");
     }
 
 }
