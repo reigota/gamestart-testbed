@@ -15,6 +15,7 @@ public class PlayerHackSlashController : MonoBehaviour
     public Action OnPlayerStopEvent;
     public Action OnPlayerJumpEvent;
     public Action OnPlayerRunEvent;
+    public Vector3 PlayerInput { get { return playerInput; }} // Para ser acessado por classes com interesse no vector3 dos inputs
 
     //Inspector variables
     [SerializeField] private float movementSpeed;
