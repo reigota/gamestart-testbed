@@ -20,7 +20,7 @@ public class TestEventSubscribers : MonoBehaviour
         playerController.OnPlayerStopEvent -= OnPlayerStop;
     }
 
-    private void OnPlayerMovement()
+    private void OnPlayerMovement(float movespeed)
     {
         Debug.Log("Player move");
     }

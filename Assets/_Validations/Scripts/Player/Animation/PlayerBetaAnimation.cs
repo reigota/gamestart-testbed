@@ -40,7 +40,7 @@ public class PlayerBetaAnimation : MonoBehaviour
     }
 
     //TODO = escuta ações de movimento do player e chama as animações de locomotion
-    private void OnPlayerMovement()
+    private void OnPlayerMovement(float moveSpeed)
     {
         anim.SetFloat("DirectionX", playerController.PlayerInput.x);
         anim.SetFloat("DirectionZ", playerController.PlayerInput.z);
@@ -49,6 +49,6 @@ public class PlayerBetaAnimation : MonoBehaviour
 	// Update is called once per frame
 	void FixedUpdate ()
     {
-        OnPlayerMovement();
+        OnPlayerMovement(0f);
     }
 }

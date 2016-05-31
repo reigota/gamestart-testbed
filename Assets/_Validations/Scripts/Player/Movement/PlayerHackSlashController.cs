@@ -4,20 +4,24 @@ using System;
 
 //Inicio da validação de movimentação hack and slash Tony.
 
+[RequireComponent(typeof(Rigidbody))]
 public class PlayerHackSlashController : MonoBehaviour 
 {
     //Private variables
     private Rigidbody rigidBody;
     private Vector3 playerInput = Vector3.zero;
+    private bool playerJumped = false;
 
     //Plubic delegates
-    public Action OnPlayerMovementEvent;
+    public Action<float> OnPlayerMovementEvent;
     public Action OnPlayerStopEvent;
     public Action OnPlayerJumpEvent;
+    public Action OnPlayerGroundedEvent; // FIXME: we need a better name - since there is jump, we need to dispatch an event when we hit the ground!
     public Action OnPlayerRunEvent;
     public Vector3 PlayerInput { get { return playerInput; }} // Para ser acessado por classes com interesse no vector3 dos inputs
 
     //Inspector variables
+    [Header("Variables for player controller")]
     [SerializeField] private float movementSpeed;
     [SerializeField] private float jumpForce;
 
@@ -51,22 +55,31 @@ public class PlayerHackSlashController : MonoBehaviour
     {
         rigidBody.velocity = playerInput * movementSpeed;
 
-        //TODO = fix button transition dispatch stop event
-        if(Input.GetButtonDown("Horizontal") || Input.GetButtonDown("Vertical"))
+        // We must see if the magnitude velocity of the rigidbody is greater than 0 to say that
+        // the character is really moving, otherwise, it has stop moving!
+        Vector3 rigidbodyVelocityNoY = new Vector3(
+            rigidBody.velocity.x,
+            0, // the Y will be for jump
+            rigidBody.velocity.z);
+        
+        if (rigidbodyVelocityNoY.sqrMagnitude > 0) {
             DispatchPlayerMovementEvent();
-
-
-        if (Input.GetButtonUp("Horizontal") || Input.GetButtonUp("Vertical"))
+        } else
             DispatchPlayerStopEvent();
     }
 
     //TODO = gravity fix, and infinity jump
     private void CheckJump()
     {
-        if(Input.GetButtonDown("Jump"))
-        {
-            rigidBody.AddForce(new Vector3(0, jumpForce, 0));
-            DispatchPlayerJumpEvent();
+        //FIXME: we need a way to uncheck this when he hit the ground. this way we make sure that the player
+        //       can only jump when is grounded, not in the air!
+        if (!playerJumped) {
+            if(Input.GetButtonDown("Jump"))
+            {
+                playerJumped = true;
+                rigidBody.AddForce(new Vector3(0, jumpForce, 0));
+                DispatchPlayerJumpEvent();
+            }
         }
     }
 
@@ -87,7 +100,7 @@ public class PlayerHackSlashController : MonoBehaviour
     private void DispatchPlayerMovementEvent()
     {
         if (OnPlayerMovementEvent != null)
-            OnPlayerMovementEvent();
+            OnPlayerMovementEvent(rigidBody.velocity.sqrMagnitude);
     }
 
     private void DispatchPlayerStopEvent()
