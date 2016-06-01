@@ -49,10 +49,12 @@ public class PlayerControllerEditor : Editor {
             playerController.OnPlayerMovementEvent += OnPlayerMove;
             playerController.OnPlayerStopEvent += OnPlayerStop;
             playerController.OnPlayerJumpEvent += OnPlayerJump;
-            playerController.OnPlayerRunEvent += OnPlayerRun;
+            playerController.OnPlayerRunEvent = OnPlayerRun;
+
         }
     }
 
+   
     #region events for the player controller
     private void OnPlayerMove(float moveSpeed) {
         playerBehaviour = "Player Moving";

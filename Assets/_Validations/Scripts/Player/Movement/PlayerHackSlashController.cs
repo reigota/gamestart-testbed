@@ -7,27 +7,45 @@ using System;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerHackSlashController : MonoBehaviour 
 {
-    //Private variables
-    private Rigidbody rigidBody;
-    private Vector3 playerInput = Vector3.zero;
-    private bool playerJumped = false;
+    #region Private variables
 
-    //Plubic delegates
+    private Rigidbody _rigidBody;
+    private Vector3 _playerInput = Vector3.zero;
+    private bool _playerJumped = false;
+
+    #region Inspector
+    
+    //Inspector variables
+    [Header("Variables for player controller")]
+    [SerializeField]
+    private float movementSpeed;
+    [SerializeField]
+    private float jumpForce;
+
+    #endregion
+
+    #endregion
+
+    #region Public properties
+
+    public Vector3 PlayerInput { get { return _playerInput; } } // Para ser acessado por classes com interesse no vector3 dos inputs
+
+    #endregion
+
+    #region Public delegates
     public Action<float> OnPlayerMovementEvent;
     public Action OnPlayerStopEvent;
     public Action OnPlayerJumpEvent;
     public Action OnPlayerGroundedEvent; // FIXME: we need a better name - since there is jump, we need to dispatch an event when we hit the ground!
     public Action OnPlayerRunEvent;
-    public Vector3 PlayerInput { get { return playerInput; }} // Para ser acessado por classes com interesse no vector3 dos inputs
 
-    //Inspector variables
-    [Header("Variables for player controller")]
-    [SerializeField] private float movementSpeed;
-    [SerializeField] private float jumpForce;
+    #endregion
+
+    #region Unity Events
 
     private void Awake()
     {
-        rigidBody = GetComponent<Rigidbody>();
+        _rigidBody = GetComponent<Rigidbody>();
     }
 
     private void Update()
@@ -42,25 +60,28 @@ public class PlayerHackSlashController : MonoBehaviour
         //CheckJump();
        //CheckRun();
     }
-    
+
+    #endregion
+
+    #region Private methods
     private void CheckInputs()
     {
        float verticalInput = Input.GetAxis("Vertical");
        float horizontalInput = Input.GetAxis("Horizontal");
 
-       playerInput = new Vector3(horizontalInput, 0, verticalInput);
+       _playerInput = new Vector3(horizontalInput, 0, verticalInput);
     }
 
     private void MovementPlayer()
     {
-        rigidBody.velocity = playerInput * movementSpeed;
+        _rigidBody.velocity = _playerInput * movementSpeed;
 
         // We must see if the magnitude velocity of the rigidbody is greater than 0 to say that
         // the character is really moving, otherwise, it has stop moving!
         Vector3 rigidbodyVelocityNoY = new Vector3(
-            rigidBody.velocity.x,
+            _rigidBody.velocity.x,
             0, // the Y will be for jump
-            rigidBody.velocity.z);
+            _rigidBody.velocity.z);
         
         if (rigidbodyVelocityNoY.sqrMagnitude > 0) {
             DispatchPlayerMovementEvent();
@@ -73,11 +94,11 @@ public class PlayerHackSlashController : MonoBehaviour
     {
         //FIXME: we need a way to uncheck this when he hit the ground. this way we make sure that the player
         //       can only jump when is grounded, not in the air!
-        if (!playerJumped) {
+        if (!_playerJumped) {
             if(Input.GetButtonDown("Jump"))
             {
-                playerJumped = true;
-                rigidBody.AddForce(new Vector3(0, jumpForce, 0));
+                _playerJumped = true;
+                _rigidBody.AddForce(new Vector3(0, jumpForce, 0));
                 DispatchPlayerJumpEvent();
             }
         }
@@ -100,7 +121,7 @@ public class PlayerHackSlashController : MonoBehaviour
     private void DispatchPlayerMovementEvent()
     {
         if (OnPlayerMovementEvent != null)
-            OnPlayerMovementEvent(rigidBody.velocity.sqrMagnitude);
+            OnPlayerMovementEvent(_rigidBody.velocity.sqrMagnitude);
     }
 
     private void DispatchPlayerStopEvent()
@@ -121,5 +142,5 @@ public class PlayerHackSlashController : MonoBehaviour
             OnPlayerRunEvent();
     }
 
-
+    #endregion
 }
