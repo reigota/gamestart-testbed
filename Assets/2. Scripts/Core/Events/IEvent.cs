@@ -17,7 +17,7 @@
         /// Used by fire the event 
         /// </summary>
         void Dispatch();
-
+        
     }
 
 }

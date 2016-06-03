@@ -28,7 +28,7 @@ namespace Game.Core
         {
             _myEvents.Add(eventName, evt);
         }
-
+        
         /// <summary>
         /// Usado pela classe concreta para disparar o evento
         /// </summary>
@@ -115,7 +115,7 @@ namespace Game.Core
             IEvent thisEvent = null;
             if(_myEvents.TryGetValue(eventName, out thisEvent))
             {
-                ((BaseEvent)thisEvent).AddListener(listener);
+                ((BaseEvent)thisEvent).RemoveListener(listener);
             }
             else
             {
@@ -133,7 +133,7 @@ namespace Game.Core
             IEvent thisEvent = null;
             if(_myEvents.TryGetValue(eventName, out thisEvent))
             {
-                ((BaseEvent<T>)thisEvent).AddListener(listener);
+                ((BaseEvent<T>)thisEvent).RemoveListener(listener);
             }
             else
             {

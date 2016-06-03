@@ -34,9 +34,9 @@ namespace Game.Entity.Unit
         {
             OnTheGround,
             JumpBegin,   // Apenas no frame onde o desejo de pular é atendido. No frame seguinte já estará no GoingUp
-            GoingUp,     // Enquanto rigidbody.velocity.y > 0, após JumpBegining
+            GoingUp,     // Enquanto rigidbody.velocity.y > 0, após JumpBegin
             GoingDown,   // Enquanto rigidbody.velocity.y < 0, após GoingUp
-            JumpEnd,     // Apenas no frame onde atinge o chão. No frame seguinte já estará no NotJumping
+            JumpEnd,     // Apenas no frame onde atinge o chão. No frame seguinte já estará no OnTheGround
             FallingDown  // Quando apenas cai de uma plataforma, sem ter pulado. Enquanto rigidbody.velocity.y < 0.
         }
 

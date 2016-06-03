@@ -13,7 +13,7 @@ namespace Game.Core.Events.PlayerEvents
     }
 
     [Serializable]
-    public class JumpEvent : BaseEvent<JumpEvents>, IEvent
+    public class JumpEvent : BaseEvent<JumpEvents>
     {
         public override string GetEventName() { return GetType().Name; }
     }
