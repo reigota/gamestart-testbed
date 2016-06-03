@@ -1,32 +1,41 @@
 ﻿using UnityEngine;
-using System.Collections;
-using GamePlay.Interfaces;
+
+using Game.Core;
 using System;
 
-namespace GamePlay.Inputs
+namespace Game.Entity.Unit
 {
 
-    public class UserInput : MonoBehaviour, IInput
+    public class UserInput : BaseBehaviour, IInput
     {
+        #region Private fields
 
         private Vector3 _inputDirection;
         private ControlBehaviour _controlBehaviour;
 
+        #endregion
+
+        #region Unity Events
+
         public void Update()
         {
-            CheckInput();
+            UpdateDirection();
+            UpdateDesiredAction();
         }
 
-        private void CheckInput()
-        {
+        #endregion
 
+        #region Private methods
+
+        private void UpdateDirection()
+        {
             float verticalInput = Input.GetAxisRaw("Vertical");
             float horizontalInput = Input.GetAxisRaw("Horizontal");
 
             _inputDirection = new Vector3(horizontalInput, 0, verticalInput);
         }
 
-        public ControlBehaviour GetDesiredBehaviour()
+        private void UpdateDesiredAction()
         {
 
             ControlBehaviour ret = _inputDirection.x != 0 || _inputDirection.z != 0  ?
@@ -39,13 +48,23 @@ namespace GamePlay.Inputs
             if(Input.GetButton("Attack"))
                 ret |= ControlBehaviour.Attack;
 
-            //Debug.Log(ret);
-            return ret;
+            _controlBehaviour = ret;
         }
+
+        #endregion
+
+        #region Public methods
 
         public Vector3 GetDesiredDirection()
         {
             return _inputDirection;
         }
+
+        public ControlBehaviour GetDesiredBehaviour()
+        {
+            return _controlBehaviour;
+        }
+
+        #endregion
     }
 }

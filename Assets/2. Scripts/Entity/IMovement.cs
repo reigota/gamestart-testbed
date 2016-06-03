@@ -1,10 +1,10 @@
-﻿using UnityEngine;
-using System.Collections;
-
-namespace GamePlay.Interfaces
+﻿
+namespace Game.Entity
 {
     public interface IMovement
     {
+        
+
         // configured by inspector, exposed throught property
         float SpeedWalkForward { get; }
         float SpeedRunForward { get; }
