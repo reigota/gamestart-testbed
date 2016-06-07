@@ -27,6 +27,7 @@ namespace Game.Entity.Unit
         public struct PlayerEvents
         {
             public JumpEvent jumpEvent;
+            public AnimatiorEvent animatiorEvent;
         }
 
         // Possiveis estados do pulo
