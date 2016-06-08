@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44692534, g: 0.49678725, b: 0.5750856, a: 1}
+  m_IndirectSpecularColor: {r: 0.44692546, g: 0.49678695, b: 0.5750854, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -307,6 +307,8 @@ MonoBehaviour:
   target: {fileID: 1501371629}
   mouseSpeedX: 250
   mouseSpeedY: 120
+  heightDamping: 2
+  rotationDamping: 3
 --- !u!1 &1146047980
 GameObject:
   m_ObjectHideFlags: 0
@@ -351,7 +353,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: a97b881908f0a4d6c95b5e11b7640370, type: 2}
+  - {fileID: 2100000, guid: c76df3bed8efaa148bf81ae9fc0432ac, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
