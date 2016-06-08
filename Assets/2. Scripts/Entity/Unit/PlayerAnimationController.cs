@@ -9,6 +9,8 @@ namespace Game.Entity.Unit
         [SerializeField] private Animator anim;
         [SerializeField] private PlayerMovementController playerMovementController;
 
+
+        private IInput _input;
         //Estados da Animacao
         public enum AnimationSate
         {
@@ -21,11 +23,13 @@ namespace Game.Entity.Unit
         {
             anim = GetComponentInChildren<Animator>();
             playerMovementController = GetComponent<PlayerMovementController>();
+            _input = GetComponent<IInput>();
         }
 
         private void Update()
         {
-
+            anim.SetFloat("DirectionX", _input.GetDesiredDirection().x, .2f, Time.deltaTime);
+            anim.SetFloat("DirectionZ", _input.GetDesiredDirection().z, .2f, Time.deltaTime);
         }
     }
 }
