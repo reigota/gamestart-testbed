@@ -598,8 +598,8 @@ GameObject:
   - 4: {fileID: 1020973165}
   - 114: {fileID: 1020973164}
   - 54: {fileID: 1020973163}
-  - 114: {fileID: 1020973162}
   - 114: {fileID: 1020973166}
+  - 114: {fileID: 1020973162}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -615,30 +615,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1020973161}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fce6395bb03f7c645ac68178c05188aa, type: 3}
+  m_Script: {fileID: 11500000, guid: 6c07854acd451f745a70283ef681c326, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attributes:
-    jumpForce: 8
-    speedRunForward: 9
-    speedWalkForward: 4
-  _events:
-    jumpEvent:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1020973166}
-          m_MethodName: SecondJmpEvent
-          m_Mode: 0
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: Game.Core.Events.PlayerEvents.JumpEvent, Assembly-CSharp, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
+  movementSpeed: 10
+  jumpForce: 0
 --- !u!54 &1020973163
 Rigidbody:
   m_ObjectHideFlags: 0
