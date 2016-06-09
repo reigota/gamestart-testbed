@@ -9,8 +9,14 @@ namespace Gameplay.Camera
 		private Transform _cameraTarget;
 		private float _cameraHeight;
 		private float _cameraDistance;
+        private float _mouseSpeedX;
+        private float _mouseSpeedY;
+        private float _heightDamping;
+        private float _rotationDamping;
 
-		public Transform CameraTarget 
+
+
+        public Transform CameraTarget 
 		{
 			get 
 			{
@@ -46,7 +52,55 @@ namespace Gameplay.Camera
 			}
 		}
 
-		public Vector3 StartCameraPostition(Transform target, float height,float distance)
+        public float MouseSpeedX
+        {
+            get
+            {
+                return _mouseSpeedX;
+            }
+            set
+            {
+                _mouseSpeedX = value;
+            }
+        }
+
+        public float MouseSpeedY
+        {
+            get
+            {
+                return _mouseSpeedY;
+            }
+            set
+            {
+                _mouseSpeedY = value;
+            }
+        }
+
+        public float HeightDamping
+        {
+            get
+            {
+                return _heightDamping;
+            }
+            set
+            {
+                _heightDamping = value;
+            }
+        }
+
+        public float RotationDamping
+        {
+            get
+            {
+                return _rotationDamping;
+            }
+            set
+            {
+                _rotationDamping = value;
+            }
+        }
+
+        public Vector3 StartCameraPostition(Transform target, float height,float distance)
 		{
 			Vector3 tempPosition = new Vector3 (target.position.x, target.position.y + height, target.position.z - distance);
 			return tempPosition;
