@@ -65,6 +65,10 @@ namespace Game.Entity.Unit
             return _controlBehaviour;
         }
 
+        public Ray getMouseRay() {
+            return Camera.main.ScreenPointToRay(Input.mousePosition);
+        }
+
         #endregion
     }
 }
