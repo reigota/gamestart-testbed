@@ -210,11 +210,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2af93f1ef4689334eb4680e6e1ea8aa4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  userInput: {fileID: 0}
-  headAnimationAttributes:
-    _headTransformGameObject: {fileID: 4000013262783072}
-    _floorGameObject: {fileID: 0}
-    _dampRotation: 0.7
-    _maxAngleRotation: 45
-    _limitAngleRotation: 80
-  testVectorAngle: {x: 0, y: 0, z: 0}
+  _headAnimationAttributes:
+    headTransformGameObject: {fileID: 4000013262783072}
+    floorGameObject: {fileID: 0}
+    dampRotation: 0.8
+    lookAtLayerObjects:
+      serializedVersion: 2
+      m_Bits: 256
+    maxAngleRotation: 45
+    rotateBodyAfterLookOn: 1
