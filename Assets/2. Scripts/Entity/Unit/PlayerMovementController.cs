@@ -139,8 +139,14 @@ namespace Game.Entity.Unit
                 // if (bla bla bla)
                 {
                     curVel = _input.GetDesiredDirection() * (walk ? _attributes.speedWalkForward : _attributes.speedRunForward);
+                    
+                    Quaternion rotacao = Quaternion.LookRotation(transform.forward, transform.up);
+
+                    curVel = rotacao * curVel;
 
                     _rigidbody.velocity = new Vector3(curVel.x, _rigidbody.velocity.y, curVel.z);
+
+                     
 
                     if(_previousDesiredBehaviour.IsSet(ControlBehaviour.Idle))
                     {
