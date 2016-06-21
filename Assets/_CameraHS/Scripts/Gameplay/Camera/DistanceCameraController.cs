@@ -10,15 +10,15 @@ public class DistanceCameraController : MonoBehaviour
     private int _positionIndex = 0;
     private RaycastHit _hit;
 
+    private void Update()
+    {
+        ChangeCameraInput();
+    }
+    
     private void FixedUpdate()
     {
         transform.LookAt(cameraTarget);
         CameraHitDetection();
-    }
-
-    private void Update()
-    {
-        ChangeCameraInput();
     }
 
     private void ChangeCameraInput()
