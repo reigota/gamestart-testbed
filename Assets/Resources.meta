@@ -1,7 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 42be106ee73dd7f468728ed43fb1a55c
 folderAsset: yes
 timeCreated: 1466132325
+=======
+guid: 4f0dc5cc62bf07742823de59e47c2fb7
+folderAsset: yes
+timeCreated: 1465952180
+>>>>>>> tony
 licenseType: Free
 DefaultImporter:
   userData: 
