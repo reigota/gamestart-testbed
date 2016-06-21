@@ -400,11 +400,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 114000011925550152, guid: 1c07f73a07f95dc4384fb0b89177d6ef,
-        type: 2}
-      propertyPath: _headAnimationAttributes.floorGameObject
-      value: 
-      objectReference: {fileID: 106384555}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1c07f73a07f95dc4384fb0b89177d6ef, type: 2}
   m_IsPrefabParent: 0
