@@ -1,49 +1,36 @@
-﻿using UnityEngine;
+ /// <summary>
+/// 
+/// </summary>
+
+using UnityEngine;
+using System;
 using System.Collections;
+  
+[RequireComponent(typeof(Animator))]  
 
-public class LocomotionPlayer : MonoBehaviour
-{
-    #region Variables (private)
-    [SerializeField] private Animator anim;
-    [SerializeField] private float directionDampTime = .25f;
+//Name of class must be name of file as well
 
-    private float speed = 0.0f;
-    private float horizontal = 0.0f;
-    private float vertical = 0.0f;
-    #endregion
+public class LocomotionPlayer : MonoBehaviour {
 
-    #region Properties (public)
-    #endregion
+    protected Animator animator;
 
-    #region Unity event functions
+    private float speed = 0;
+    private float direction = 0;
+    private Locomotion locomotion = null;
 
-    private void Awake()
-    {
-        anim = GetComponent<Animator>();
-
-        if (anim.layerCount >= 2)
-        {
-            anim.SetLayerWeight(1, 1);
-        }
-    }
-
-    void Start () {
-	
+	// Use this for initialization
+	void Start () 
+	{
+        animator = GetComponent<Animator>();
+        locomotion = new Locomotion(animator);
 	}
-
-	void Update ()
-    {
-        horizontal = Input.GetAxisRaw("Horizontal");
-        vertical = Input.GetAxisRaw("Vertical");
-
-        speed = new Vector3(horizontal, vertical).sqrMagnitude;
-
-        anim.SetFloat("Speed", speed);
-        anim.SetFloat("Direction", horizontal, directionDampTime, Time.deltaTime);
+    
+	void Update () 
+	{
+        if (animator && Camera.main)
+		{
+            JoystickToEvents.Do(transform,Camera.main.transform, ref speed, ref direction);
+            locomotion.Do(speed * 6, direction * 180);
+		}		
 	}
-    #endregion
-
-    #region Methods
-
-    #endregion Methods
 }
