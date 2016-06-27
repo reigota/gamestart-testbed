@@ -28,7 +28,7 @@ public class Locomotion
 
         bool inTransition = m_Animator.IsInTransition(0);
         bool inIdle = state.IsName("Base Layer.Idle");
-        bool inTurn = state.IsName("Base Layer.TurnOnSpot");// || state.IsName("Locomotion.PlantNTurnLeft") || state.IsName("Locomotion.PlantNTurnRight");
+        bool inTurn = state.IsName("Base Layer.TurnOnSpot");
         bool inLocomotion = state.IsName("Base Layer.Locomotion");
 
         float speedDampTime = inIdle ? 0 : m_SpeedDampTime;

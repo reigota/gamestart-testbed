@@ -31,6 +31,16 @@ public class LocomotionPlayer : MonoBehaviour {
 		{
             JoystickToEvents.Do(transform,Camera.main.transform, ref speed, ref direction);
             locomotion.Do(speed * 6, direction * 180);
+
+
+            // controle para pulo
+            if (Input.GetButtonDown("Jump"))
+            {
+                animator.SetBool("Jump", true);
+            } else
+            {
+                animator.SetBool("Jump", false);
+            }
 		}		
 	}
 }
