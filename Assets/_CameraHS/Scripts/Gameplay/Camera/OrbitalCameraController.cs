@@ -64,7 +64,7 @@ namespace Gameplay.Camera
 
                 var currentRotation = Quaternion.Euler(0, currentRotationAngle, 0);
 
-                _myTransform.position = target.position;
+                //_myTransform.position = target.position;
                 _myTransform.position -= currentRotation * Vector3.forward * _cameraDistance;
 
                 _myTransform.position = new Vector3(_myTransform.position.x, currentHeight, _myTransform.position.z);
