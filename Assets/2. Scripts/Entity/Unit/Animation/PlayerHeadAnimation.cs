@@ -1,10 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
-using Game.Entity.Unit;
 using DG.Tweening;
 
 namespace Game.Entity.Unit.Animation {
-  [RequireComponent(typeof(UserInput))]
   public class PlayerHeadAnimation : MonoBehaviour {
 
     #region Auxiliar/internal structs, enums and classes
@@ -27,28 +24,21 @@ namespace Game.Entity.Unit.Animation {
       [Header("One side angle limitation")]
       [SerializeField]
       public float maxAngleRotation;
-      [Header("Leave 0 to don't move")]
-      [SerializeField]
-      public float rotateBodyAfterLookOn;
     }
 
     #endregion
 
     #region private variables
-
-    private UserInput _userInput;
+    
     private float _lastDeltaTime = 0f;
     [SerializeField]
     private HeadAnimationAttributes _headAnimationAttributes;
     private Tweener _myTweener;
+    private float _rotateBodyAfterLookOn;
 
     #endregion
 
-    #region Unity Events
-
-    private void Awake() {
-      _userInput = GetComponent<UserInput>();
-    }
+    #region Unity Events 
 
     private void Update() {
       LookAtRayPosition();
@@ -69,7 +59,7 @@ namespace Game.Entity.Unit.Animation {
         return;
       }
 
-      Ray mouseRay = _userInput.getMouseRay();
+      Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
       RaycastHit hit;
 
       // the rotation is still under way.
@@ -77,13 +67,7 @@ namespace Game.Entity.Unit.Animation {
         return;
 
       if (Physics.Raycast(mouseRay, out hit, 1000f, _headAnimationAttributes.lookAtLayerObjects)) {
-        // We need the main body to be a reference to get the angle that the head will be looking at
-        // TODO: we might use hit.point if it will look up or down on the scene
-        Vector3 pointPos = new Vector3(
-            hit.point.x,
-            _headAnimationAttributes.headTransformGameObject.position.y,
-            hit.point.z);
-        Quaternion qTo = Quaternion.LookRotation(pointPos - _headAnimationAttributes.headTransformGameObject.position);
+        Quaternion qTo = Quaternion.LookRotation(hit.point - _headAnimationAttributes.headTransformGameObject.position);
 
         float mouseAngleDiff = Quaternion.Angle(transform.rotation, qTo);
 
@@ -93,18 +77,18 @@ namespace Game.Entity.Unit.Animation {
         } else {
           // look at the maximum angle define at _maxAngleRotation
           Vector3 tPos = transform.position;
-          HeadSide hs = AngleDir(tPos + transform.forward, pointPos, tPos + transform.up);
+          HeadSide hs = AngleDir(tPos + transform.forward, hit.point, tPos + transform.up);
           if (hs == HeadSide.Left) {
             Debug.Log("Left");
             _myTweener = _headAnimationAttributes.headTransformGameObject.DORotate(
-                new Vector3(0, -_headAnimationAttributes.maxAngleRotation, 0),
-                _headAnimationAttributes.dampRotation).OnComplete(() => CheckandRotateBody(pointPos));
+                new Vector3(hit.point.x, -_headAnimationAttributes.maxAngleRotation, hit.point.z),
+                _headAnimationAttributes.dampRotation);
 
           } else if (hs == HeadSide.Right) {
             Debug.Log("Right");
             _myTweener = _headAnimationAttributes.headTransformGameObject.DORotate(
-                new Vector3(0, _headAnimationAttributes.maxAngleRotation, 0),
-                _headAnimationAttributes.dampRotation).OnComplete(() => CheckandRotateBody(pointPos)); ;
+                new Vector3(hit.point.x, _headAnimationAttributes.maxAngleRotation, hit.point.z),
+                _headAnimationAttributes.dampRotation);
           } else
             Debug.LogError("PlayerHeadAnimation - something wrong with the look at angle code!");
         }
@@ -115,26 +99,6 @@ namespace Game.Entity.Unit.Animation {
         LookAt(transform.position + transform.forward);
       }
 
-    }
-
-    /// <summary>
-    /// Checkands the rotate body.
-    /// </summary>
-    /// <param name="lookingPoint">Looking point.</param>
-    private void CheckandRotateBody(Vector3 lookingPoint) {
-      if (_headAnimationAttributes.rotateBodyAfterLookOn > 0) {
-        if (_lastDeltaTime == 0f) {
-          _lastDeltaTime = Time.deltaTime;
-        } else {
-          if (_lastDeltaTime >= _headAnimationAttributes.rotateBodyAfterLookOn) {
-            LookAt(transform, lookingPoint, false);
-            _lastDeltaTime = 0f;
-          } else
-            _lastDeltaTime += Time.deltaTime;
-        }
-      } else {
-        _lastDeltaTime = 0f;
-      }
     }
 
     private HeadSide AngleDir(Vector3 fwd, Vector3 targetDir, Vector3 up) {
@@ -172,13 +136,13 @@ namespace Game.Entity.Unit.Animation {
             point,
             _headAnimationAttributes.dampRotation,
             AxisConstraint.Y,
-            Vector3.up).OnComplete(() => CheckandRotateBody(point));
+            Vector3.up);
       } else
         body.DOLookAt(
             point,
             _headAnimationAttributes.dampRotation,
             AxisConstraint.Y,
-            Vector3.up).OnComplete(() => CheckandRotateBody(point));
+            Vector3.up);
     }
 
     #endregion
