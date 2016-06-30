@@ -65,9 +65,9 @@ namespace Gameplay.Camera
                 var currentRotation = Quaternion.Euler(0, currentRotationAngle, 0);
 
                 //_myTransform.position = target.position;
-                _myTransform.position -= currentRotation * Vector3.forward * _cameraDistance;
+         //       _myTransform.position -= currentRotation * Vector3.forward * _cameraDistance;
 
-                _myTransform.position = new Vector3(_myTransform.position.x, currentHeight, _myTransform.position.z);
+         //       _myTransform.position = new Vector3(_myTransform.position.x, currentHeight, _myTransform.position.z);
 
                 _myTransform.LookAt(target);
             }
@@ -82,7 +82,7 @@ namespace Gameplay.Camera
 			Vector3 mousePosition = mouseRotation * new Vector3 (0f, 0f, -_cameraDistance) + target.position;
 
 			_myTransform.rotation = mouseRotation;
-			_myTransform.position = mousePosition;
+			//_myTransform.position = mousePosition;
 		}
 
     }
