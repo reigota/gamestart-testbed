@@ -6,8 +6,7 @@ public class CameraController : MonoBehaviour
     //Mouse variables
     private float _angleV;
     private float _angleH;
-    [SerializeField]
-    private float _mouseSensibility = 10f;
+    [SerializeField] private float _mouseSensibility = 10f;
 
     //Control variables
     private bool _mousePressed;
@@ -19,12 +18,9 @@ public class CameraController : MonoBehaviour
     private float _cameraDistance;
 
     //Inspector variables
-    [SerializeField]
-    private Transform cameraTarget;
-    [SerializeField]
-    private Transform[] cameraPositions;
-    [SerializeField]
-    private float cameraSpeed;
+    [SerializeField] private Transform cameraTarget;
+    [SerializeField] private Transform[] cameraPositions;
+    [SerializeField] private float cameraSpeed;
 
     //Phiscs variables
     private int _positionIndex = 0;
@@ -50,7 +46,7 @@ public class CameraController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //CameraHitDetection();
+        CameraHitDetection();
         
     }
 
@@ -58,7 +54,9 @@ public class CameraController : MonoBehaviour
     {
         if(_mousePressed)
             MouseOrbit();
-        // todo: smooth
+        
+		// todo: smooth
+		CameraHitDetection();
         transform.LookAt(cameraTarget);
     }
 
@@ -92,9 +90,7 @@ public class CameraController : MonoBehaviour
 
         Quaternion rot = Quaternion.Euler(-_angleH, _angleV, 0);
 
-        transform.position = cameraTarget.position +
-                            rot * cameraPositions[_positionIndex].localPosition;
-
+        transform.position = cameraTarget.position + rot * cameraPositions[_positionIndex].localPosition;
         transform.LookAt(cameraTarget);
 
     }
