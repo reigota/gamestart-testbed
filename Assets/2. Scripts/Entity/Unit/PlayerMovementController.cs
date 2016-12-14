@@ -23,11 +23,13 @@ namespace Game.Entity.Unit
             public float speedWalkForward;
         }
 
-        [Serializable]
-        public struct PlayerEvents
+        // Usado para evitar ficar instanciando eventos. Quando precisar publicar um evento 
+        // basta reusar o evento que já esta instanciado e publica-lo novamente.
+        // Como se fosse um "pool de eventos".
+        private struct PlayerEvents
         {
-            public JumpEvent jumpEvent;
-            public AnimatiorEvent animatiorEvent;
+            public PlayerJumpEvent jumpEvent;
+            public PlayerAnimationEvent animatiorEvent;
         }
 
         // Possiveis estados do pulo
@@ -48,7 +50,6 @@ namespace Game.Entity.Unit
         [SerializeField]
         private PlayerAttributes _attributes;
 
-        [SerializeField]
         private PlayerEvents _events;
 
         private JumpState _jumpState;
@@ -88,32 +89,32 @@ namespace Game.Entity.Unit
         {
             _jumpState = JumpState.JumpBegin;
             _rigidbody.AddForce(Vector3.up * _attributes.jumpForce, ForceMode.Impulse);
-            Dispatch(_events.jumpEvent.GetEventName(), JumpEvents.OnStartJump);
+            _events.jumpEvent.Publish(JumpEvent.OnStartJump);
             yield return 0;
 
             _jumpState = JumpState.GoingUp;
             yield return new WaitUntil(() => { return _rigidbody.velocity.y < 0; });
 
             _jumpState = JumpState.GoingDown;
-            Dispatch(_events.jumpEvent.GetEventName(), JumpEvents.OnStartGoingDown);
+            _events.jumpEvent.Publish(JumpEvent.OnStartGoingDown);
             yield return new WaitUntil(() => { return _rigidbody.velocity.y == 0; });
 
             _jumpState = JumpState.JumpEnd;
-            Dispatch(_events.jumpEvent.GetEventName(), JumpEvents.OnEndJump);
+            _events.jumpEvent.Publish(JumpEvent.OnEndJump);
             yield return 0;
 
             _jumpState = JumpState.OnTheGround;
-            Dispatch(_events.jumpEvent.GetEventName(), JumpEvents.OnReachTheGround);
+            _events.jumpEvent.Publish(JumpEvent.OnReachTheGround);
         }
 
         private IEnumerator ProcessFall()
         {
             _jumpState = JumpState.FallingDown;
-            Dispatch(_events.jumpEvent.GetEventName(), JumpEvents.OnStartFalling);
+            _events.jumpEvent.Publish(JumpEvent.OnStartFalling);
             yield return new WaitUntil(() => { return _rigidbody.velocity.y == 0; });
 
             _jumpState = JumpState.OnTheGround;
-            Dispatch(_events.jumpEvent.GetEventName(), JumpEvents.OnReachTheGround);
+            _events.jumpEvent.Publish(JumpEvent.OnReachTheGround);
         }
 
         private void UpdateDesiredBehaviour()
@@ -165,13 +166,13 @@ namespace Game.Entity.Unit
             _previousDesiredBehaviour = _input.GetDesiredBehaviour();
         }
 
-        private void RegistryPlayerMovementControllerEvents()
+        private void CreatePlayerEvents()
         {
             if(_events.jumpEvent == null)
             {
-                _events.jumpEvent = new JumpEvent();
+                _events.jumpEvent = new PlayerJumpEvent();
             }
-            RegistryEvent(_events.jumpEvent.GetEventName(), _events.jumpEvent);
+            
         }
 
 
@@ -182,7 +183,7 @@ namespace Game.Entity.Unit
         public void Awake()
         {
             GetComponentReferences();
-            RegistryPlayerMovementControllerEvents();
+            CreatePlayerEvents();
         }
 
         public void FixedUpdate()
@@ -199,7 +200,7 @@ namespace Game.Entity.Unit
         public void Update()
         {
             _currentDesiredBehaviour = _input.GetDesiredBehaviour();
-
+            
             UpdateDesiredBehaviour();
 
             _previousDesiredBehaviour = _currentDesiredBehaviour;

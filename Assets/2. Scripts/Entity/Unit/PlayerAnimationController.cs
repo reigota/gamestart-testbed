@@ -29,14 +29,18 @@ namespace Game.Entity.Unit
         private void Update()
         {
             //Read player input
-            float Vert = Input.GetAxis("Vertical");
-            float Horz = Input.GetAxis("Horizontal");
-            //Set animator floating point values
-            anim.SetFloat("DirectionZ", Horz, 0.2f, Time.deltaTime);
-            anim.SetFloat("DirectionX", Vert, 0.2f, Time.deltaTime);
+            //float Vert = Input.GetAxisRaw("Vertical");
+            //float Horz = Input.GetAxisRaw("Horizontal");
+            ////Set animator floating point values
+            //anim.SetFloat("Turn", Horz, 0.2f, Time.deltaTime);
+            //anim.SetFloat("Forward", Vert*.5f, 0.2f, Time.deltaTime);
 
-            //anim.SetFloat("DirectionX", _input.GetDesiredDirection().x, .2f, Time.deltaTime);
-            //anim.SetFloat("DirectionZ", _input.GetDesiredDirection().z, .2f, Time.deltaTime);
+            ControlBehaviour ctrl = _input.GetDesiredBehaviour();
+
+            float forward_speed = ctrl.IsSet(ControlBehaviour.Run) ? 1f : (ctrl.IsSet(ControlBehaviour.Walk) ? 0.5f : 0f);
+
+            anim.SetFloat("Turn", _input.GetDesiredDirection().x, .2f, Time.deltaTime);
+            anim.SetFloat("Forward", _input.GetDesiredDirection().z * forward_speed, .2f, Time.deltaTime);
         }
     }
 }

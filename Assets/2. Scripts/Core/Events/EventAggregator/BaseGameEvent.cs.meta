@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 5393d56c8d96f0d4abdf53565a9457d2
+labels:
+- EventAggregator
+- MessageSystem
+timeCreated: 1475146447
+licenseType: Pro
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
